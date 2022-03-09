@@ -5,8 +5,10 @@ import br.com.webmarmo.mercadolivro.controller.request.PutCustomerRequest
 import br.com.webmarmo.mercadolivro.controller.response.CustomerResponde
 import br.com.webmarmo.mercadolivro.extension.toCustomerModel
 import br.com.webmarmo.mercadolivro.extension.toResponse
+import br.com.webmarmo.mercadolivro.security.UserCanOnlyAccessTheirOwnResource
 import br.com.webmarmo.mercadolivro.service.CustomerService
 import org.springframework.http.HttpStatus
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -28,6 +30,7 @@ class CustomerController(
     }
 
     @GetMapping("/{id}")
+    @UserCanOnlyAccessTheirOwnResource
     fun getCustomer(@PathVariable id: Int): CustomerResponde {
         return customerService.findById(id = id).toResponse()
     }
