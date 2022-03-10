@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  jpa:
+    show-sql: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/mercadolivro?createDatabaseIfNotExist=true
+    username: root
+    password: root

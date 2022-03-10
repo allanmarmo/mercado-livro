@@ -3,7 +3,9 @@ package br.com.webmarmo.mercadolivro.controller
 import br.com.webmarmo.mercadolivro.controller.request.PostBookRequest
 import br.com.webmarmo.mercadolivro.controller.request.PutBookRequest
 import br.com.webmarmo.mercadolivro.controller.response.BookResponse
+import br.com.webmarmo.mercadolivro.controller.response.PageResponse
 import br.com.webmarmo.mercadolivro.extension.toBookModel
+import br.com.webmarmo.mercadolivro.extension.toPageResponse
 import br.com.webmarmo.mercadolivro.extension.toResponse
 import br.com.webmarmo.mercadolivro.service.BookService
 import br.com.webmarmo.mercadolivro.service.CustomerService
@@ -15,10 +17,10 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("book")
+@RequestMapping("books")
 class BookController(
-    val bookService: BookService,
-    val customerService: CustomerService
+    private val bookService: BookService,
+    private val customerService: CustomerService
 ) {
 
     @PostMapping
@@ -29,8 +31,8 @@ class BookController(
     }
 
     @GetMapping
-    fun findAll(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
-        return bookService.findAll(pageable).map { it.toResponse() }
+    fun findAll(@PageableDefault(page = 0, size = 10) pageable: Pageable): PageResponse<BookResponse> {
+        return bookService.findAll(pageable).map { it.toResponse() }.toPageResponse()
     }
 
     @GetMapping("/active")

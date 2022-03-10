@@ -38,9 +38,13 @@ class SecurityConfig(
     )*/
     private val PUBLIC_MATCHERS = arrayOf<String>()
 
+    private val PUBLIC_GET_MATCHERS = arrayOf(
+        "/books"
+    )
+
     // Ex: Libera somente página utilizando POST
     private val PUBLIC_POST_MATCHERS = arrayOf(
-        "/customer"
+        "/customers"
     )
 
     private val ADMIN_MATCHERS = arrayOf(
@@ -55,6 +59,7 @@ class SecurityConfig(
         http.cors().and().csrf().disable()
         http.authorizeRequests()
             .antMatchers(*PUBLIC_MATCHERS).permitAll()
+            .antMatchers(HttpMethod.GET, *PUBLIC_GET_MATCHERS).permitAll()
             .antMatchers(HttpMethod.POST, *PUBLIC_POST_MATCHERS).permitAll()
             .antMatchers(*ADMIN_MATCHERS).hasAuthority(Role.ADMIN.description)
             .anyRequest()
@@ -96,7 +101,7 @@ class SecurityConfig(
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
         config.allowCredentials = true
-        config.addAllowedOrigin("*")
+        config.addAllowedOriginPattern("*")
         config.addAllowedHeader("*")
         config.addAllowedMethod("*")
         source.registerCorsConfiguration("/**", config)
